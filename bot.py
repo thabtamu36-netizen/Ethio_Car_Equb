@@ -1168,24 +1168,23 @@ async def receive_transaction_reference(
             # or for the same user but the previous submission is not REJECTED.
 
             if user and existing_payment.user_id == user.id:
-                if existing_payment.status and existing_payment.status.upper() == "REJECTED":
-                    # allow resubmission by same user after rejection
-                    pass
+                # same user already has a pending/approved submission.
+                # (a REJECTED submission by the same user is allowed and does
+                #  not reach this block - should_block_transaction_reference
+                #  returns False in that case.)
+                if language == "am":
+                    await message.answer(
+                        "❌ እርስዎ ይህን መለያ ከዚህ በፊት አስገብተዋል፤ እባክዎ የክፍያ ሁኔታዎን ይመልከቱ።"
+                    )
+                elif language == "or":
+                    await message.answer(
+                        "❌ Lakkoofsa kana duraanii galchitaniittu; maaloo haala kaffallii keessan ilaalaa."
+                    )
                 else:
-                    # same user already has pending/approved submission
-                    if language == "am":
-                        await message.answer(
-                            "❌ እርስዎ ይህን መለያ ከዚህ በፊት አስገብተዋል፤ እባክዎ የክፍያ ሁኔታዎን ይመልከቱ።"
-                        )
-                    elif language == "or":
-                        await message.answer(
-                            "❌ Lakkoofsa kana duraanii galchitaniittu; maaloo haala kaffallii keessan ilaalaa."
-                        )
-                    else:
-                        await message.answer(
-                            "❌ You have already submitted this transaction reference; please check your payment status."
-                        )
-                    return
+                    await message.answer(
+                        "❌ You have already submitted this transaction reference; please check your payment status."
+                    )
+                return
             else:
                 # different user has submitted this reference: block
                 if language == "am":
