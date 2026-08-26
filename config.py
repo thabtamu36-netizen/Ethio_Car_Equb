@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent
 
-load_dotenv(BASE_DIR / ".env")
+load_dotenv(BASE_DIR / ".env", override=True)
 
 
 def resolve_database_url(database_url: str) -> str:
@@ -28,13 +28,23 @@ def resolve_database_url(database_url: str) -> str:
     return f"sqlite:///{(BASE_DIR / db_path).as_posix()}"
 
 
-BOT_TOKEN = os.getenv(
-    "BOT_TOKEN"
-)
+BOT_TOKEN = (os.getenv("BOT_TOKEN") or "").strip()
+if not BOT_TOKEN:
+    raise RuntimeError("Missing BOT_TOKEN in .env file")
 
-ADMIN_ID = int(
-    os.getenv("ADMIN_ID")
-)
+_admin_id_value = (os.getenv("ADMIN_ID") or "").strip()
+if not _admin_id_value:
+    raise RuntimeError("Missing ADMIN_ID in .env file")
+
+try:
+    ADMIN_ID = int(_admin_id_value)
+except ValueError as exc:
+    raise RuntimeError(
+        "ADMIN_ID must be a valid Telegram numeric user ID in .env file"
+    ) from exc
+
+if ADMIN_ID <= 0:
+    raise RuntimeError("ADMIN_ID must be a positive Telegram user ID")
 
 DATABASE_URL = resolve_database_url(
     os.getenv(

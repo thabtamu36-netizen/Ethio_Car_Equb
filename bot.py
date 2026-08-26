@@ -66,6 +66,19 @@ def get_language(data):
     return data.get("language", "am")
 
 
+def should_block_transaction_reference(existing_payment, current_user_id):
+    if not existing_payment:
+        return False
+
+    existing_user_id = getattr(existing_payment, "user_id", None)
+    status = str(getattr(existing_payment, "status", "") or "").upper()
+
+    if current_user_id is not None and existing_user_id == current_user_id:
+        return status != "REJECTED"
+
+    return True
+
+
 # =========================================================
 # /START
 # =========================================================
@@ -1146,7 +1159,10 @@ async def receive_transaction_reference(
             .first()
         )
 
-        if existing_payment:
+        if existing_payment and should_block_transaction_reference(
+            existing_payment,
+            user.id if user else None,
+        ):
 
             # Only treat as duplicate if the reference exists for another user,
             # or for the same user but the previous submission is not REJECTED.
@@ -1483,6 +1499,7 @@ async def main():
     print(
         "🚗 ETHIO CAR EQUB BOT IS RUNNING..."
     )
+    print(f"Admin Telegram ID: {ADMIN_ID}")
     # Show configured admin dashboard URL (if set)
     try:
         print(f"Admin dashboard URL: {DASHBOARD_URL}")

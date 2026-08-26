@@ -104,7 +104,6 @@ class Payment(Base):
 
     transaction_reference = Column(
         String(100),
-        unique=True,
         nullable=False,
         index=True
     )
