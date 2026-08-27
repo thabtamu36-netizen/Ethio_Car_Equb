@@ -57,7 +57,7 @@ def generate_approved_users_pdf(participants: list[dict]) -> BytesIO:
     )
 
     elements = [
-        Paragraph("ETHIO CAR EQUB", title_style),
+        Paragraph("SEYA ONLINE CAR EQUB", title_style),
         Paragraph("Approved Participants Report", subtitle_style),
         Paragraph(
             f"Generated: {datetime.utcnow().strftime('%d %B %Y at %H:%M UTC')}",
