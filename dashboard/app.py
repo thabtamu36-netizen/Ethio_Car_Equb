@@ -151,9 +151,7 @@ def get_rejected_users(db: Session = Depends(get_db_session)):
 
 
 @app.get("/api/download-pdf")
-def download_pdf(password: str | None = None, db: Session = Depends(get_db_session)):
-    if DASHBOARD_PASSWORD and password != DASHBOARD_PASSWORD:
-        raise HTTPException(status_code=401, detail="Invalid dashboard password")
+def download_pdf(db: Session = Depends(get_db_session)):
 
     payments = _get_approved_payments(db)
     participants = [_participant_payload(payment) for payment in payments]

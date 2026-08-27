@@ -4,8 +4,8 @@
 # ETHIO CAR EQUB - RENDER TEST VERSION 2
 import asyncio
 from datetime import datetime
-
 from aiogram import Bot, Dispatcher, F
+
 from aiogram.filters import CommandStart
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message, CallbackQuery
@@ -92,8 +92,8 @@ async def start_command(
     await state.clear()
 
     await message.answer(
-        "🚗✨ <b>ETHIO CAR EQUB</b> ✨🚗\n\n"
-        "ወደ ETHIO CAR EQUB እንኳን በደህና መጡ።\n\n"
+        "🚗✨ <b>SEYA ONLINE CAR EQUB</b> ✨🚗\n\n"
+        "ወደ SEYA ONLINE CAR EQUB እንኳን በደህና መጡ።\n\n"
         "የቋንቋ ምርጫዎን ይምረጡ።",
         parse_mode="HTML",
         reply_markup=language_keyboard()
@@ -128,6 +128,36 @@ async def select_amharic(
         "ክፍያዎን ለራስዎ ወይም ለሌላ ሰው እየሰጡ ነዎት?",
         parse_mode="HTML",
         reply_markup=payment_for_keyboard_am()
+    )
+
+    await state.set_state(
+        RegistrationStates.payment_for
+    )
+    
+    # =========================================================
+# LANGUAGE — ENGLISH
+# =========================================================
+
+@dp.callback_query(
+    RegistrationStates.language,
+    F.data == "lang_en"
+)
+async def select_english(
+    callback: CallbackQuery,
+    state: FSMContext
+):
+
+    await state.update_data(
+        language="en"
+    )
+
+    await callback.answer()
+
+    await callback.message.edit_text(
+        "👋 <b>Welcome to SEYA ONLINE CAR EQUB!</b>\n\n"
+        "Are you making this payment for yourself or for another person?",
+        parse_mode="HTML",
+        reply_markup=payment_for_keyboard_en()
     )
 
     await state.set_state(
@@ -1394,7 +1424,7 @@ async def receive_transaction_reference(
 
     admin_text = (
 
-        "🚗✨ <b>ETHIO CAR EQUB</b> ✨🚗\n\n"
+        "🚗✨ <b>SEYA ONLINE CAR EQUB</b> ✨🚗\n\n"
 
         "🔔 <b>NEW PAYMENT SUBMISSION</b>\n\n"
 
@@ -1683,7 +1713,7 @@ async def approve_payment(
 
         if user.language == "or":
             confirmation_message = (
-                "🚗✨ <b>ETHIO CAR EQUB</b> ✨🚗\n\n"
+                "🚗✨ <b>SEYA ONLINE CAR EQUB</b> ✨🚗\n\n"
 
                 "🎉 <b>Hirmaannaa hirmaataa keessan mirkaneeffameera!</b>\n\n"
 
@@ -1705,7 +1735,7 @@ async def approve_payment(
 
                 "━━━━━━━━━━━━━━━━━━\n\n"
 
-                "✅ ETHIO CAR EQUB keessatti keessatti galmaa’ameera.\n\n"
+                "✅ SEYA ONLINE CAR EQUB keessatti keessatti galmaa’ameera.\n\n"
 
                 "📢 Tarree hirmaattotaa Telegram channel keenya keessatti argama.\n\n"
 
@@ -1714,16 +1744,16 @@ async def approve_payment(
 
         elif user.language == "am":
             confirmation_message = (
-                "🚗✨ <b>ETHIO CAR EQUB</b> ✨🚗\n\n"
+                "🚗✨ <b>SEYA ONLINE CAR EQUB</b> ✨🚗\n\n"
 
                 "🎉 <b>የተሳታፊ ምዝገባዎ ተረጋግጧል!</b>\n\n"
 
                 "━━━━━━━━━━━━━━━━━━\n\n"
 
-                "✅ የክፍያ መረጃዎ በአስተዳዳሪ "
+                "✅ የክፍያ መረጃዎ "
                 "ተረጋግጧል።\n\n"
 
-                f"🎟️ <b>የተሳታፊ ቁጥር</b>\n"
+                f"🎟️ <b>የዕጣ ቁጥር </b>\n"
                 f"#{participant_number:03d}\n\n"
 
                 f"👤 <b>ስም</b>\n"
@@ -1737,7 +1767,7 @@ async def approve_payment(
 
                 "━━━━━━━━━━━━━━━━━━\n\n"
 
-                "✅ በETHIO CAR EQUB በትክክል "
+                "✅ በSEYA ONLINE CAR EQUB በትክክል "
                 "ተመዝግበዋል።\n\n"
 
                 "📢 የተሳታፊዎች ዝርዝር በTelegram "
@@ -1748,7 +1778,7 @@ async def approve_payment(
 
         else:
             confirmation_message = (
-                "🚗✨ <b>ETHIO CAR EQUB</b> ✨🚗\n\n"
+                "🚗✨ <b>SEYA ONLINE CAR EQUB</b> ✨🚗\n\n"
 
                 "🎉 <b>Your participant registration is confirmed!</b>\n\n"
 
@@ -1956,7 +1986,7 @@ async def reject_payment(
         # -------------------------------------------------
 
         rejection_message = (
-            "🚗✨ <b>ETHIO CAR EQUB</b> ✨🚗\n\n"
+            "🚗✨ <b>SEYA ONLINE CAR EQUB</b> ✨🚗\n\n"
 
             "❌ <b>የክፍያ ማረጋገጫ አልተሳካም</b>\n\n"
 
@@ -2039,6 +2069,6 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
 
         print(
-            "🛑 ETHIO CAR EQUB BOT STOPPED."
+            "🛑 SEYA ONLINE CAR EQUB BOT STOPPED."
         )
         
