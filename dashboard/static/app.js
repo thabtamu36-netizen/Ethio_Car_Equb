@@ -208,7 +208,7 @@ async function downloadPdf() {
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = `ethio-car-equb-approved-${new Date().toISOString().slice(0, 10)}.pdf`;
+    link.download = `seya-online-car-equb-approved-${new Date().toISOString().slice(0, 10)}.pdf`;
     document.body.appendChild(link);
     link.click();
     link.remove();
